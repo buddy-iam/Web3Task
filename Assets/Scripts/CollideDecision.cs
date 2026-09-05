@@ -1,43 +1,46 @@
 using UnityEngine;
 
-public class CollideDecision : MonoBehaviour
-{
-    [SerializeField]private float thVel = 1.0f;
-    [SerializeField] private float thAngle = 1.0f;
+public class CollideDecision : MonoBehaviour {
 
-    //[SerializeField]private GameObject slope;
-    //private SpriteRenderer spriteRenderer;
+    [SerializeField] private GameObject victoryPanel;
+    [SerializeField] private GameObject retry;
 
-    //void Start() { 
-        //spriteRenderer = GetComponent<SpriteRenderer>();
-    //}
+    private void Start() {
+        if (victoryPanel != null) {
+            victoryPanel.SetActive(false);
+        }
+        if (retry != null) {
+            retry.SetActive(true);
+        }
+    }
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.gameObject.name == "Slope") { 
-            float collideSpeed = collision.relativeVelocity.magnitude;
+        if (collision.gameObject.name == "Slope") {
+            Debug.Log("Slope hit recorded! Head for the bucket sensor.");
+        } else {
+            TriggerFail();
+        }
+    }
 
-            Vector2 incomingAngle = -collision.relativeVelocity;
-            Vector2 surfaceAngle = collision.GetContact(0).normal;
-
-            float collideAngle = Mathf.Abs(90f - Vector2.Angle(incomingAngle, surfaceAngle));
-
-            if (collideSpeed > thVel || collideAngle > thAngle) {
-                TriggerFail();
-            } else { 
-                TriggerSuccess();
-            }
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.gameObject.name == "Sensor") {
+            TriggerSuccess();;
+        } else {
+            TriggerFail();
         }
     }
 
     void TriggerFail() {
-        //spriteRenderer.color = Color.black;
-        Debug.Log("Wrong direction / force / surface");
+        Debug.Log("Try Again!");
     }
 
-    void TriggerSuccess() { 
-        //spriteRenderer.color = Color.green;
+    void TriggerSuccess() {
+        if (victoryPanel != null) {
+            victoryPanel.SetActive(true);
+        }
+        if (retry != null) {
+            retry.SetActive(false);
+        }
         Debug.Log("Great Job!");
     }
-
 }
-

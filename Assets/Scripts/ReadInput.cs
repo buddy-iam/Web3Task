@@ -12,11 +12,15 @@ public class ReadInput : MonoBehaviour
     private Vector2 startPoint;
     private Vector2 endPoint;
 
+    private bool hasLaunched = false;
+
     private void Start() { 
         ballArc.positionCount = 0;
     }
 
     private void Update() {
+        if (hasLaunched) return;
+
         if (Input.GetMouseButtonDown(0)) {
             startPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             ballArc.positionCount = arcPoints;
@@ -58,9 +62,10 @@ public class ReadInput : MonoBehaviour
         }
     }
 
-    void Launch(Vector2 dir, float len) { 
+    void Launch(Vector2 dir, float len) {
+        if (hasLaunched) return;
+        hasLaunched= true;
         ball.AddForce(forceFactor * len * dir, ForceMode2D.Impulse);
-        ball.GetComponent<Lifecycle>()?.MarkAsLaunched();
     }
 
 }

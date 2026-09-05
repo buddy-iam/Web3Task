@@ -19,8 +19,8 @@ public class Lifecycle : MonoBehaviour {
         if (isCollided) {
             timer += Time.deltaTime;
 
-            if (timer >= 4f) {
-                RespawnAndReset();
+            if (timer >= 12f) {
+                // show restart button to perform!!
             }
         }
     }
@@ -37,13 +37,5 @@ public class Lifecycle : MonoBehaviour {
             isCollided = true;
             timer = 0f;
         }
-    }
-
-    void RespawnAndReset() {
-        if (ballPrefab != null) {
-            Instantiate(ballPrefab, initialPosition, Quaternion.identity);
-        }
-
-        Destroy(gameObject);
     }
 }
